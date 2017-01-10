@@ -47,12 +47,20 @@ lookup <- function(data, ltable, by, drop = TRUE) {
 
 }
 
-cartesian_join <- function(data, V, data_key = names(data), V_name = 'X') {
+cartesian_join <- function(
+  data, V, data_key = names(data), V_name = 'X', as.data.frame = TRUE) {
+
   a = data.table(V)
   names(a) <- V_name
   setkeyv(a, V_name)
   b = as.data.table(x = data)
   setkeyv(b, data_key)
-  out <- a[, as.list(b), by = key(a)] %>% as.data.frame
-  return(out)
+  out <- a[, as.list(b), by = key(a)]
+
+  if (as.data.frame) {
+    return(as.data.frame(out))
+  } else {
+    return(out)
+  }
+
 }
