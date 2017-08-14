@@ -1,0 +1,29 @@
+# Author: `r Sys.getenv('USERNAME')`
+# Date:   `r Sys.Date()`
+# Description:
+#
+#   Test for function
+#
+
+# Run for interactive testing
+#
+#   require(testthat)
+#   require(`r pkg`)
+#
+
+# Clear environment before running tests
+rm(list = ls(all = TRUE))
+
+
+context("`r f`")
+
+test_that('`r f` works', {
+  # Not yet!
+  expect_equal(1, 0)
+})
+
+
+
+
+
+

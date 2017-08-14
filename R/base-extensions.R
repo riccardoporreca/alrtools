@@ -51,7 +51,7 @@ pswitch <- function(EXPR, ...) {
   m[n * (EXPR - 1) + 1:n]
 }
 
-read.csv0 <- Curry(read.csv, stringsAsFactors = FALSE)
+# read.csv0 <- Curry(read.csv, stringsAsFactors = FALSE)
 
 copy.table <- function(obj, size = 4096) {
   clip <- paste('clipboard-', size, sep = '')

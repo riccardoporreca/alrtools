@@ -1,0 +1,94 @@
+Sweave <- function (file, driver = RweaveLatex(), syntax = getOption("SweaveSyntax"), 
+    encoding = "", ...) 
+{
+    if (is.character(driver)) 
+        driver <- get(driver, mode = "function")()
+    else if (is.function(driver)) 
+        driver <- driver()
+    if (is.null(syntax)) 
+        syntax <- SweaveGetSyntax(file)
+    if (is.character(syntax)) 
+        syntax <- get(syntax, mode = "list")
+    if (.Platform$OS.type == "windows") 
+        file <- chartr("\\", "/", file)
+    text <- SweaveReadFile(file, syntax, encoding = encoding)
+    attr(file, "encoding") <- encoding <- attr(text, "encoding")
+    drobj <- driver$setup(file = file, syntax = syntax, ...)
+    on.exit(driver$finish(drobj, error = TRUE))
+    syntax <- attr(text, "syntax")
+    if (!is.na(envopts <- Sys.getenv("SWEAVE_OPTIONS", NA))) 
+        drobj$options <- SweaveParseOptions(envopts, drobj$options, 
+            driver$checkopts)
+    drobj$filename <- file
+    drobj$hasSweaveInput <- attr(text, "hasSweaveInput")
+    mode <- "doc"
+    chunknr <- 0L
+    chunk <- NULL
+    chunkopts <- NULL
+    namedchunks <- list()
+    for (linenum in seq_along(text)) {
+        line <- text[linenum]
+        if (length(grep(syntax$doc, line))) {
+            if (mode == "doc") {
+                if (!is.null(chunk)) 
+                  drobj <- driver$writedoc(drobj, chunk)
+            }
+            else {
+                if (!is.null(chunkopts$label)) 
+                  namedchunks[[chunkopts$label]] <- chunk
+                if (!is.null(chunk)) 
+                  drobj <- driver$runcode(drobj, chunk, chunkopts)
+                mode <- "doc"
+            }
+            chunk <- NULL
+        }
+        else if (length(grep(syntax$code, line))) {
+            if (mode == "doc") {
+                if (!is.null(chunk)) 
+                  drobj <- driver$writedoc(drobj, chunk)
+            }
+            else {
+                if (!is.null(chunkopts$label)) 
+                  namedchunks[[chunkopts$label]] <- chunk
+                if (!is.null(chunk)) 
+                  drobj <- driver$runcode(drobj, chunk, chunkopts)
+            }
+            mode <- "code"
+            chunkopts <- sub(syntax$code, "\\1", line)
+            chunkopts <- SweaveParseOptions(chunkopts, drobj$options, 
+                driver$checkopts)
+            chunk <- paste("#line ", linenum + 1L, " \"", basename(file), 
+                "\"", sep = "")
+            attr(chunk, "srclines") <- linenum
+            chunknr <- chunknr + 1L
+            chunkopts$chunknr <- chunknr
+        }
+        else {
+            if (mode == "code" && length(grep(syntax$coderef, 
+                line))) {
+                chunkref <- sub(syntax$coderef, "\\1", line)
+                if (!(chunkref %in% names(namedchunks))) {
+                  warning(gettextf("reference to unknown chunk %s", 
+                    sQuote(chunkref)), call. = TRUE, domain = NA)
+                  next
+                }
+                else {
+                  line <- c(namedchunks[[chunkref]], paste("#line ", 
+                    linenum + 1L, " \"", basename(file), "\"", 
+                    sep = ""))
+                }
+            }
+            srclines <- c(attr(chunk, "srclines"), rep(linenum, 
+                length(line)))
+            chunk <- c(chunk, line)
+            attr(chunk, "srclines") <- srclines
+        }
+    }
+    if (!is.null(chunk)) {
+        drobj <- if (mode == "doc") 
+            driver$writedoc(drobj, chunk)
+        else driver$runcode(drobj, chunk, chunkopts)
+    }
+    on.exit()
+    driver$finish(drobj)
+}

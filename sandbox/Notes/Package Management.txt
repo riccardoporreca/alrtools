@@ -1,0 +1,10 @@
+Package Management
+
+library()
+require()
+installed.packages()
+as.environment(match("package:name", search()))
+  will return the environment in which the package is stored
+.packages()
+
+How to list loaded packages

@@ -1,0 +1,173 @@
+sample()
+is.na()
+is.*
+replace()
+split()
+plot()
+qpol()
+boxplot()
+aggregate()
+outer()
+ave()
+scale()
+sweep()
+do.call()
+do.*
+rle()
+rapply()
+ifelse()
+apply()
+tapply()
+lapply()
+evalq()
+attach()
+assign()
+transform()
+
+Statistical functions:
+  mean()
+  min()
+  max()
+  median()
+  var()
+  sd()
+  mad()
+  range()
+  length()
+  sum()
+  quantile()
+ 
+Distribution functions:
+  norm()
+  pois()
+  binom()
+  beta()
+  f()
+  weibull()
+  lnorm()
+  nbinom()
+  t()
+  unif()
+  wilcox()
+  cauchy()
+  chisq()
+  ex()
+  gamma()
+  hyper()
+  logis()
+  geom()
+
+Distribution prefixes:
+  r
+  d
+  q
+  p
+
+search()
+searchpaths()
+ls.str()
+ls()
+getwd()
+setwd()
+install.packages()
+require()
+library()
+save.image()
+load()
+fix()
+edit()
+seq()
+rep()
+length()
+cbind()
+rbind()
+matrix()
+names()
+dimnames()
+unique()
+duplicated()
+expand.grid()
+with()
+within()
+transform()
+args()
+cat()
+all()
+!all()
+any()
+!any()
+browser()
+debug()
+trace()
+traceback()
+Rprof()
+print.default()
+subset()
+read.table()
+file.show()
+file.choose()
+read.delim()
+read.csv()
+read.*()
+as.Date()
+as.*()
+order()
+sort()
+merge()
+table()
+data.frame()
+table()
+class()
+mode()
+typeof()
+prop.table()
+cut()
+.Last.value
+untar()
+unzip()
+get()
+exists()
+assign()
+aperm()
+t()
+nrow()
+ncol()
+crossprod()
+diag()
+solve()
+eigen()
+svd()
+prod()
+tr()
+lsfit()
+ls.diag()
+qr()
+lm()
+qr.*()
+table()
+
+
+
+
+
+
+Other items:
+  True == 1
+  What are the things you can do from the menus?
+  How to tell where a function comes from?
+  How to learn about new functions?
+  package:ChainLadder
+  package:survival
+  List out 
+    standard packages
+    recommended
+    useful
+    those to avoid
+  "Stacking"
+  Naming args, columns, variables
+  Common SQL operations
+    Join
+    Cross Product
+    Select
+    Object creation methods
+  

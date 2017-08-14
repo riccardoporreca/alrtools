@@ -1,0 +1,34 @@
+% Author: Adam L. Rich
+% Date:   September 12, 2011
+% Description:
+%
+%   A severity analysis for US A&E
+%
+
+\documentclass{article}
+\title{US Architects and Engineers Severity Analysis}
+\author{Specialty Lines Actuarial}
+
+\usepackage{Sweave}
+\begin{document}
+\maketitle
+
+For this analysis we only used claim data where as of 2nd quarter 2011 the claim was closed
+and the final paid was nonzero.
+
+There are 2387 claims that meet this criteria.
+
+\begin{Schunk}
+\begin{Soutput}
+BICI A&E MM BICI A&E PE BUSA A&E MM BUSA A&E PE 
+        673        1433         207          74 
+\end{Soutput}
+\end{Schunk}
+
+% \begin{center}
+% <<fig=TRUE, echo=FALSE >>=
+% boxplot(Ozone ~ Month, data = airquality)
+% @
+% \end{center}
+
+\end{document}

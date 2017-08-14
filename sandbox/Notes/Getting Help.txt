@@ -1,0 +1,3 @@
+Getting Help
+
+help.search('.*apply.*', package = .packages());

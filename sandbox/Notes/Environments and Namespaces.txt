@@ -1,0 +1,24 @@
+Namespaces
+
+  loadedNamespaces()
+
+Environments
+
+  parent.env()
+  baseenv()
+  emptyenv()
+  environmentName()
+  environment()
+  objects()
+  eapply()
+  
+  
+  To count the number of functions in base:
+    sum(eapply(baseenv(), class) == "function");
+    e <- unlist(eapply(baseenv(), class));
+    tapply(e, e, length);
+  
+Frames
+
+  parent.frame()
+  

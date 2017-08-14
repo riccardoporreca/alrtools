@@ -1,0 +1,84 @@
+Purpose
+  The goal is that the attendees will know how to and have a motivation to start using R in their work at Beazley.  They will know where to get help both internally and from the R interface and community.
+  
+[5 Minutes]
+Why use R?  Why not use Excel?
+  1. Strenghts and Weaknesses of both
+  ** 2. Include quote from Actuary Magazine about Spreadsheet Risk
+  ** 3. Quotes from article Simon forwarded about Spreadsheet Risk
+  4. R is a general purpose language ideally suited for dealing with data and doing calculations quickly.  There is a steep learning curve and thousands of functions.
+  5. Excel is a general purpose computation engine with a slick graphical interface ideally suited for tactially moving and analyzing data.  My three year old can use it.
+  6. Excel and VBA do not come equipped with complex data types
+  7. Later in the presentation, I will show a couple of examples of where Excel fails and R excels.  Pardon the pun.
+
+[5 Minutes]
+Who else is using R?
+  1. Lloyds
+  2. Practically Everyone doing real statistical analysis
+  3. Get a list from the "R Ecosystem" talk
+
+[30 Minutes]
+Where to Start, or Get Some Data
+  1. Built-in datasets allow for fast learning and experimenting, data()
+  2. R/RExcel
+  3. read.*(), load()
+  4. edit(), fix()
+  5. package:RODBC
+  6. (exercise)
+
+[50 Minutes]
+R as a Language
+  1. Basic data types
+  2. Subscripting
+  3. Basic functions [I was thinking to go through a list like the one Mango did]
+  4. R's power is in vectorization: *apply family of functions
+  5. Other topics
+
+[10 Minutes]
+R Packages  
+  1. There are over 1,000 functions in 'package:base'
+  2. There are over 3,000 packages on CRAN
+  3. There is a package for just about everything, even just for fun
+  4. Some of our favorites: ggplot2, reshape2, chainladder, RnavGraph, etc.
+
+[20 Minutes]
+Writing your own functions
+  1. Arguments
+  2. Returning values
+  3. Control structures
+  4. Namespacing, closures
+  5. Packing it up
+  6. etc.
+  7. (exercise)
+
+[20 Minutes]
+Where R Excels
+  1. Large data sets
+  2. Summarizing data quickly
+  3. Statistics
+  4. Graphics
+  5. Sweave and the like
+  6. *apply() family of functions
+  7. Multidimensional data
+  8. etc.
+
+[20 Minutes]
+How to get help
+  1. ?
+  2. ??
+  3. help.start()
+  4. demo(), vignette(), example(), etc.
+  5. Functions to get info about environment like: str(), args(), head(), objects(), etc.
+  6. Stack Overflow
+  7. CRAN, Crantastic!, R Journal, People, R-Bloggers
+  8. Other people using R at Beazley
+
+[15 Minutes]
+What next?
+  1. Think of ways to use R
+  2. Ask others to help you get started
+  3. Read a book (we have a library!)
+  4. Go to the LondonR user group meeting coming up
+  5. Other meetings like this at Beazley?
+  6. External training.  Any takers?
+

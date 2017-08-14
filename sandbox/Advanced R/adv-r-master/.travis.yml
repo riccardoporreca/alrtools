@@ -1,0 +1,41 @@
+language: c
+
+before_install:
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+
+install:
+  # Install binary pandoc from Rstudio
+  - export PATH="$HOME/pandoc:$PATH"
+  - mkdir $HOME/pandoc
+  - curl -O https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.3.zip
+  - unzip -j pandoc-1.12.3.zip pandoc-1.12.3/linux/debian/x86_64/pandoc
+      -d $HOME/pandoc
+  - chmod +x $HOME/pandoc/pandoc
+  - pandoc --version
+
+  # Install jekyll
+  - travis_retry gem install jekyll mime-types
+
+  # Install R packages
+  - ./travis-tool.sh r_binary_install rcpp rjsonio knitr ggplot2 png
+  - ./travis-tool.sh r_install        lubridate yaml microbenchmark dplyr plyr stringr memoise inline fastmatch
+  - ./travis-tool.sh github_package hadley/pryr hadley/lineprof yihui/knitr rstudio/rmarkdown hadley/bookdown
+  - mkdir ~/.R
+  - cp Makevars ~/.R
+
+script: jekyll build
+
+after_success:
+  - cp -r figures/ _site/figures
+
+deploy:
+  provider: s3
+  access_key_id: AKIAJYY6UT5EHUXEKWCA
+  secret_access_key:
+    secure: "Ogjfu+wBbKDtY1VJQnfGejNcxPx2iEwlSgEeTHC7M5jyuSIdYdaf0IbJ9LlDSxA/vcO/NbGOzEdPKevuiRgcU7Bj+J7tlOrvw6WC4R1RK4JQNowuxoDOwNlAvPD5O5DMiIwku+xbjcxyIwU1yPWIjCgpOmAAHMgBeYI+4+N9Ggk="
+  bucket: adv-r.had.co.nz
+  region: us-west-2
+  local-dir: _site
+  skip_cleanup: true
