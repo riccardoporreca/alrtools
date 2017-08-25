@@ -1,7 +1,0 @@
-# A sample document
-
-
-```{r }
-summary(iris)
-```
-
