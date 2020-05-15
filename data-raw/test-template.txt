@@ -5,44 +5,14 @@
 #   Test for function
 #
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 21ce52281f6ac8841f32e5a7163888ce2023c506
-# Run for interactive testing
-#
-#   require(testthat)
-#   require(`r pkg`)
-#
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 21ce52281f6ac8841f32e5a7163888ce2023c506
 # Clear environment before running tests
 rm(list = ls(all = TRUE))
 
 
-<<<<<<< HEAD
 context("`r f`")
 
 test_that('`r f` works', {
-=======
-
-context("`r f`")
-
-testthat('`r f` works', {
->>>>>>> 21ce52281f6ac8841f32e5a7163888ce2023c506
   # Not yet!
   expect_equal(1, 0)
 })
-
-
-
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> 21ce52281f6ac8841f32e5a7163888ce2023c506
-
 
