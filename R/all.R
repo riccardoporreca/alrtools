@@ -1,101 +1,76 @@
 # Author: Adam L. Rich
 # Date:   November 4, 2017
+#         May 14, 2020
 # Description
 #
-#   Putting everything back in one file...
+#   A bunch of convenience functions
+#
+#   [May 14, 2020 ALR]
+#   read.csv0 is back!
+#   lookup removed
+#   commented out any functions I don't use
+#   copy.table and paste.table removed, use clipr instead
+#
+#   TODO
+#     * Find other functions to add, like `vlookup`
+#     * Finish writing tests
+#     * Add R help inline to this file
 #
 
 
-safe_ifelse <- function (test, yes, no) {
+
+# CONSTANTS
+e <- exp(1L)
+
+
+# [May 14, 2020 ALR]
+# Renamed to remove safe_ prefix
+# Just make sure to qualify the namespace when using
+ifelse <- function (test, yes, no) {
 
   # This is to prepare for calling the base package function
-
 
   # Unfactor yes and no if they are factors
   if (is.factor(yes))  yes <- levels(yes)[yes]
   if (is.factor(no))   no  <- levels(no)[no]
-
 
   # The original function follows
   base::ifelse(test, yes, no)
 
 }
 
-safe_merge <- function(
-  x, y, by = intersect(names(x), names(y)), by.x = by, by.y = by,
-  all = FALSE, all.x = all, all.y = all,
-  sort = TRUE, suffixes = c(".x",".y"),
-  incomparables = NULL, ...){
 
-  # Checks to see if by.x and by.y are unique keys
-
-  l.x <- nrow(x)
-  l.y <- nrow(y)
-
-  k.x <- nrow(as.data.frame(unique(x[,by.x])))
-  k.y <- nrow(as.data.frame(unique(y[,by.y])))
-
-  u.x <- (k.x == l.x)
-  u.y <- (k.y == l.y)
-
-  # Warn if both are not unique
-  if(!u.x & !u.y){
-    warning('Merge is not safe: by is not a unique key')
-  }
-
-  base::merge(x, y, by, by.x, by.y, all, all.x, all.y, sort, suffixes, incomparables, ...)
-
-}
-
+# [May 14, 2020 ALR]
+# like pmin to min, pmax to max
 pmean <- function(..., na.rm = TRUE) {
   m <- cbind(...)
   apply(m, 1, mean, na.rm = na.rm)
 }
 
-pswitch <- function(EXPR, ...) {
-  m <- cbind(...)
-  n <- nrow(m)
-  m[n * (EXPR - 1) + 1:n]
-}
-
-# read.csv0 <- Curry(read.csv, stringsAsFactors = FALSE)
-
-copy.table <- function(obj, size = 4096) {
-  clip <- paste('clipboard-', size, sep = '')
-  f <- file(description = clip, open = 'w')
-  write.table(obj, f, row.names = FALSE, sep = '\t')
-  close(f)
-}
-
-paste.table <- function() {
-  f <- file(description = 'clipboard', open = 'r')
-  df <- read.table(f, sep = '\t', header = TRUE)
-  close(f)
-  return(df)
-}
-
-e <- exp(1L)
-
-quarter_name <- function(d){
-  m <- rep(1:4, each = 3)[as.integer(format(d, '%m'))]
-  paste(format(d, '%Y'), 'q', m, sep = '')
-}
 
 year <- function(d){
   as.integer(format(d, '%Y'))
 }
 
+
+
 month <- function(d) {
   as.integer(format(d, '%m'))
 }
+
+
 
 day <- function(d){
   as.integer(format(d, '%d'))
 }
 
+
+
 quarter <- function(d){
-  rep(1:4, each = 3)[Month(d)]
+  rep(1:4, each = 3)[month(d)]
 }
+
+
 
 left <- function(string, n) {
   substring(
@@ -104,6 +79,8 @@ left <- function(string, n) {
     last = n
   )
 }
+
+
 
 right <- function(string, n) {
 
@@ -120,13 +97,23 @@ right <- function(string, n) {
   )
 }
 
+
+
 mid <- function(string, start, end) {
   substring(string, start, end)
 }
 
+
+
+
+# [May 14, 2020 ALR]
+# Be sensitive to all trailing and leading whitespace
 trim <- function(x) {
-  gsub("(^ +)|( +$)", "", x);
+  gsub("^(\\s+)|(\\s+)$", "", x);
 }
+
+
+
 
 open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
 
@@ -150,6 +137,8 @@ open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
   return(invisible(NULL))
 }
 
+
+
 load_env <- function(RData, env = new.env()){
   # con <- gzfile(RData)
   # on.exit(close(con))
@@ -157,18 +146,24 @@ load_env <- function(RData, env = new.env()){
   return(env)
 }
 
-env_name <- function(env) {
-  n <- base::environmentName(env)
-  if (n == '') {
-    return(capture.output(env))
-  } else {
-    return(n)
-  }
-}
 
-clear_env <- function(pos = .GlobalEnv){
-  rm(list = ls(pos), pos = pos)
-}
+
+# env_name <- function(env) {
+#   n <- base::environmentName(env)
+#   if (n == '') {
+#     return(capture.output(env))
+#   } else {
+#     return(n)
+#   }
+# }
+
+
+
+# clear_env <- function(pos = .GlobalEnv){
+#   rm(list = ls(pos), pos = pos)
+# }
+
+
 
 source_env <-function(RScript, env = new.env()){
   with(env, {
@@ -177,7 +172,11 @@ source_env <-function(RScript, env = new.env()){
   })
 }
 
-ExecuteIn <- function(f, env, ...) {
+
+
+# [May 14, 2020 ALR]
+# Name changed to execute_in from ExecuteIn
+execute_in <- function(f, env, ...) {
   if (!'environment' %in% class(env))
     env <- as.environment(env)
   if (identical(parent.env(env), emptyenv()))
@@ -187,13 +186,10 @@ ExecuteIn <- function(f, env, ...) {
   gox(...)
 }
 
-normalize_path <- function(p){
-  p <- base::normalizePath(p, winslash = '/', mustWork = TRUE)
-  if(grepl('(/|\\\\)$', p)) {
-    p <- paste(p, '.', sep = '')
-  }
-  p
-}
+
+
+
+
 
 write.function <- function(f, file, name = NULL) {
   if (is.null(name)) {
@@ -205,6 +201,8 @@ write.function <- function(f, file, name = NULL) {
   invisible(kode)
 }
 
+
+
 write.package <- function(pkg, folder) {
   dir.create(folder, showWarnings = FALSE)
   fs <- ls(getNamespace(pkg), all = TRUE)
@@ -215,9 +213,12 @@ write.package <- function(pkg, folder) {
   }
 }
 
-Curry <- function(FUN, ...) {
 
-  # Curry
+
+
+curry <- function(FUN, ...) {
+
+  # curry
   #   To curry a function means to pre-evaluate some of the arguments
   #   So, if you have a function
   #
@@ -225,21 +226,23 @@ Curry <- function(FUN, ...) {
   #
   #   And you always want b to be 1, you could define
   #
-  #     add.one <- Curry(sum, b = 1)
+  #     add.one <- curry(sum, b = 1)
   #
   #   Which is the same as
   #
   #     function(a) {a + 1}
   #
 
-  # Curry works because list evaluates its arguments
-  .orig = list(...);
+  # curry works because list evaluates its arguments
+  .orig = list(...)
 
   # The ... referenced here is the remainder
   #   of the args passed to the curried function
   #   when it is called
   function(...) do.call(FUN, c(.orig, list(...)))
 }
+
+
 
 HFactory  <- function(name, ignore.case = TRUE){
   is.function <- base::is.function(name)
@@ -263,76 +266,12 @@ HFactory  <- function(name, ignore.case = TRUE){
   return(eval(parse(text = s)))
 }
 
-lookup <- function(data, ltable, by, drop = TRUE) {
-
-  if (nrow(data) > 0)
-    data$ID_ <- 1:nrow(data)
-  else
-    data$ID_ <- integer(0)
 
 
-  ln <- names(ltable)
-  dn <- names(data)
-
-  if (!missing(by)) {
-    by_start <- paste0(by, '_start')
-    ln <- ln[ln %in% c(by, by_start)]
-    dn <- dn[dn %in% by]
-  }
-
-  lranges <- ln[grepl(pattern = '_start$', x = ln)]
-
-
-  if (length(lranges) > 0) {
-    dranges <- strtrim(lranges, nchar(lranges) - 6)
-
-    for(i in 1:length(lranges)) {
-
-      l <- lranges[i]
-      d <- dranges[i]
-
-      lv <- ltable[, l]
-      dv <- data[, d]
-
-      if (is.factor(lv)) lv <- as.character(lv)
-      if (is.factor(dv)) dv <- as.character(dv)
-
-      if (is.character(lv)) lv <- as.Date(lv) %>% as.numeric
-      if (is.character(dv)) dv <- as.Date(dv) %>% as.numeric
-
-      breaks <- c(Inf, lv) %>% unique %>% sort
-      indexes <- cut(dv, breaks, right = FALSE) %>% as.integer
-      data[, l] <- breaks[indexes]
-      ltable[, l] <- lv
-    }
-  }
-
-  ret <- ln[!ln %in% c(dn, lranges)]
-  m <- merge(data, ltable, all.x = TRUE, sort = FALSE)[, c('ID_', ret)]
-  o <- order(m$ID_)
-  m[o, ret, drop = drop]
-
-}
-
-cartesian_join <- function(
-  data, V, data_key = names(data), V_name = 'X', as.data.frame = TRUE) {
-
-  a = data.table(V)
-  names(a) <- V_name
-  setkeyv(a, V_name)
-  b = as.data.table(x = data)
-  setkeyv(b, data_key)
-  out <- a[, as.list(b), by = key(a)]
-
-  if (as.data.frame) {
-    return(as.data.frame(out))
-  } else {
-    return(out)
-  }
-
-}
-
-CNumeric <- function(v) {
+# [May 14, 2020 ALR]
+# CNumeric changed to cnumeric
+# CNumeric is a VBA function, hence the name
+cnumeric <- function(v) {
 
   # Trim first
   v <- trim(v)
@@ -354,4 +293,182 @@ CNumeric <- function(v) {
   ifelse(m, kast/100, kast)
 
 }
+
+
+
+# [May 14, 2020 ALR]
+# add namespace to utils::read.csv
+read.csv0 <- curry(utils::read.csv, stringsAsFactors = FALSE)
+
+
+
+
+
+
+# # [May 14, 2020 ALR]
+# # While this function was useful for the CT SERS project
+# # it is finicky
+# # Replacing with vlookup from another project
+# lookup <- function(data, ltable, by, drop = TRUE) {
+#
+#   if (nrow(data) > 0)
+#     data$ID_ <- 1:nrow(data)
+#   else
+#     data$ID_ <- integer(0)
+#
+#
+#   ln <- names(ltable)
+#   dn <- names(data)
+#
+#   if (!missing(by)) {
+#     by_start <- paste0(by, '_start')
+#     ln <- ln[ln %in% c(by, by_start)]
+#     dn <- dn[dn %in% by]
+#   }
+#
+#   lranges <- ln[grepl(pattern = '_start$', x = ln)]
+#
+#
+#   if (length(lranges) > 0) {
+#     dranges <- strtrim(lranges, nchar(lranges) - 6)
+#
+#     for(i in 1:length(lranges)) {
+#
+#       l <- lranges[i]
+#       d <- dranges[i]
+#
+#       lv <- ltable[, l]
+#       dv <- data[, d]
+#
+#       if (is.factor(lv)) lv <- as.character(lv)
+#       if (is.factor(dv)) dv <- as.character(dv)
+#
+#       if (is.character(lv)) lv <- as.Date(lv) %>% as.numeric
+#       if (is.character(dv)) dv <- as.Date(dv) %>% as.numeric
+#
+#       breaks <- c(Inf, lv) %>% unique %>% sort
+#       indexes <- cut(dv, breaks, right = FALSE) %>% as.integer
+#       data[, l] <- breaks[indexes]
+#       ltable[, l] <- lv
+#     }
+#   }
+#
+#   ret <- ln[!ln %in% c(dn, lranges)]
+#   m <- merge(data, ltable, all.x = TRUE, sort = FALSE)[, c('ID_', ret)]
+#   o <- order(m$ID_)
+#   m[o, ret, drop = drop]
+#
+# }
+
+
+
+
+# # [May 14, 2020 ALR]
+# # This used to use data.table
+# # Needs to be re-written to use something else,
+# # maybe C!
+# # Also needs some rationality checking
+# cartesian_join <- function(
+#   data, V, data_key = names(data), V_name = 'X', as.data.frame = TRUE) {
+#
+#   a = data.table(V)
+#   names(a) <- V_name
+#   setkeyv(a, V_name)
+#   b = as.data.table(x = data)
+#   setkeyv(b, data_key)
+#   out <- a[, as.list(b), by = key(a)]
+#
+#   if (as.data.frame) {
+#     return(as.data.frame(out))
+#   } else {
+#     return(out)
+#   }
+#
+# }
+
+
+
+
+
+
+
+# [May 14, 2020 ALR]
+# TODO replace with tidyverse or C-native variant
+#
+# safe_merge <- function(
+#   x, y, by = intersect(names(x), names(y)), by.x = by, by.y = by,
+#   all = FALSE, all.x = all, all.y = all,
+#   sort = TRUE, suffixes = c(".x",".y"),
+#   incomparables = NULL, ...){
+#
+#   # Checks to see if by.x and by.y are unique keys
+#
+#   l.x <- nrow(x)
+#   l.y <- nrow(y)
+#
+#   k.x <- nrow(as.data.frame(unique(x[,by.x])))
+#   k.y <- nrow(as.data.frame(unique(y[,by.y])))
+#
+#   u.x <- (k.x == l.x)
+#   u.y <- (k.y == l.y)
+#
+#   # Warn if both are not unique
+#   if(!u.x & !u.y){
+#     warning('Merge is not safe: by is not a unique key')
+#   }
+#
+#   base::merge(x, y, by, by.x, by.y, all, all.x, all.y, sort, suffixes, incomparables, ...)
+#
+# }
+
+
+# [May 14, 2020 ALR]
+# I never even use switch!
+#
+# pswitch <- function(EXPR, ...) {
+#   m <- cbind(...)
+#   n <- nrow(m)
+#   m[n * (EXPR - 1) + 1:n]
+# }
+
+
+
+
+# [May 14, 2020 ALR]
+# Use clipr instead
+#
+# copy.table <- function(obj, size = 4096) {
+#   clip <- paste('clipboard-', size, sep = '')
+#   f <- file(description = clip, open = 'w')
+#   write.table(obj, f, row.names = FALSE, sep = '\t')
+#   close(f)
+# }
+
+
+
+# [May 14, 2020 ALR]
+# Use clipr instead
+#
+# paste.table <- function() {
+#   f <- file(description = 'clipboard', open = 'r')
+#   df <- read.table(f, sep = '\t', header = TRUE)
+#   close(f)
+#   return(df)
+# }
+
+
+# quarter_name <- function(d){
+#   m <- rep(1:4, each = 3)[as.integer(format(d, '%m'))]
+#   paste(format(d, '%Y'), 'q', m, sep = '')
+# }
+
+
+# normalize_path <- function(p){
+#   p <- base::normalizePath(p, winslash = '/', mustWork = TRUE)
+#   if(grepl('(/|\\\\)$', p)) {
+#     p <- paste(p, '.', sep = '')
+#   }
+#   p
+# }
+
 
