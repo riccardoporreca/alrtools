@@ -483,3 +483,24 @@ vlookup <- function(lookup_value, table_array, col_index_number, type = 0, looku
 VLOOKUP <- function(...) {vlookup(...)}
 
 
+
+
+
+matrix2latex <- function(
+  M, one_line = TRUE, print = TRUE, ret = !print) {
+  M <- as.matrix(M)
+  if (one_line) {
+    newline = ' '
+  } else {
+    newline = '\n'
+  }
+  rows <- apply(M, 1, function(r) paste0(r, collapse = ' & '))
+  rows_collapsed <- paste0(rows, collapse = paste0(' \\\\', newline))
+  latex <- paste0(
+    c('\\begin{bmatrix}', rows_collapsed, '\\end{bmatrix}'),
+    collapse = newline)
+  if (print) message(latex)
+  if (ret) return(latex)
+  invisible()
+}
+
