@@ -1,18 +1,14 @@
-# Author: richad
+# Author: Adam Rich
 # Date:   2020-05-15
 # Description:
 #
 #   Test for function `trim`
 #
 
-# Run for interactive testing
-#
-#   require(testthat)
-#   require(alrtools)
-#
-
 # Clear environment before running tests
 rm(list = ls(all = TRUE))
+require(alrtools)
+require(testthat)
 
 
 context("trim")

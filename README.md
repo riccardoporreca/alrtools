@@ -1,4 +1,5 @@
-# alrtools
-My own stuff for R.  Functions that I write in other work that are not project-specific can get added here.
+# `alrtools`
+Functions in R that I've written (all by myself).
+I find them useful.
 
-Boo-yah
+

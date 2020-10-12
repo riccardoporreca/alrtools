@@ -1,10 +1,13 @@
 Package: alrtools
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
+Title: My R Package
+Version: 2020.10.12
+Authors@R: person("Adam", "Rich", email = "adamleerich@gmail.com", role = c("aut", "cre"))
+Description: Hello, my name is Adam.  I wrote some code in R.  
 License: CC0
 LazyData: TRUE
 Suggests: testthat
 Imports: knitr
+RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)

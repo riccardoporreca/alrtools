@@ -1,5 +1,5 @@
 # Author: Adam Rich
-# Date:   2020-05-15
+# Date:   2020-10-12
 # Description:
 #
 #   Test for function
@@ -11,9 +11,10 @@ require(alrtools)
 require(testthat)
 
 
-context("e")
+context("month")
 
-test_that('e works', {
-  expect_equal(alrtools::e, exp(1L))
+test_that('month works', {
+  expect_equal(month(as.Date('2020-10-14')), 10)
+  expect_equal(month(ISOdate(1923, 12, 2)), 12)
 })
 

@@ -1,4 +1,4 @@
-# Author: richad
+# Author: Adam Rich
 # Date:   2020-05-15
 # Description:
 #
@@ -7,14 +7,10 @@
 #   has a hard time when the branches are factors
 #
 
-# Run for interactive testing
-#
-#   require(testthat)
-#   require(alrtools)
-#
-
 # Clear environment before running tests
 rm(list = ls(all = TRUE))
+require(alrtools)
+require(testthat)
 
 
 context("ifelse")
@@ -48,23 +44,23 @@ test_that('base::ifelse has a problem when branches are factors', {
     base::ifelse(test, true, false) == base::ifelse(test, truef, false),
     !test)
 
-  expect_is(alrtools::ifelse(test, true, false), 'character')
-  expect_is(alrtools::ifelse(test, truef, false), 'character')
+  expect_is(alrtools:::ifelse(test, true, false), 'character')
+  expect_is(alrtools:::ifelse(test, truef, false), 'character')
 
   expect_equal(
-    alrtools::ifelse(test, true, false),
-    alrtools::ifelse(test, truef, false))
+    alrtools:::ifelse(test, true, false),
+    alrtools:::ifelse(test, truef, false))
 
   expect_equal(
-    alrtools::ifelse(!test, true, false),
-    alrtools::ifelse(!test, truef, false))
+    alrtools:::ifelse(!test, true, false),
+    alrtools:::ifelse(!test, truef, false))
 
 
   for (i in 1:10) {
     rnd <- sample(c(TRUE, FALSE), 15, replace = TRUE)
     expect_equal(
-      alrtools::ifelse(rnd, true, false),
-      alrtools::ifelse(rnd, truef, false))
+      alrtools:::ifelse(rnd, true, false),
+      alrtools:::ifelse(rnd, truef, false))
   }
 
 })

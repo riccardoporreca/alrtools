@@ -19,13 +19,43 @@
 
 
 
-# CONSTANTS
-e <- exp(1L)
+#' Euler's number
+#' @description 2.718282
+"e"
 
 
-# [May 14, 2020 ALR]
-# Renamed to remove safe_ prefix
-# Just make sure to qualify the namespace when using
+
+
+#' A factor-safe version of \code{\link[base]{ifelse}}
+#'
+#' @description
+#' The \code{\link[base]{ifelse}} function does weird
+#' things when you pass it factors.
+#' This version doesn't.
+#'
+#' @param
+#' test   a vector of logicals
+#' yes    values to return if test is TRUE
+#' no     values to return if test if FALSE
+#'
+#' @return
+#' For each position, \code{ifelse} returns
+#' the value of \code{yes} or \code{no}
+#' depending on the value of \code{test}.
+#'
+#' @examples
+#' ifelse(
+#'   c(TRUE, FALSE),
+#'   c('Yes', 'Yeah!'),
+#'   c('No', 'Nope'))
+#'
+#' # base ifelse does weird stuff with factors
+#' yesf <- factor(c('Yes', 'Yeah!'))
+#' nof <- factor(c('No', 'Nope'))
+#' base::ifelse(c(T, F), yesf, nof)
+#' ifelse(c(T, F), yesf, nof)
+#'
+#' @export
 ifelse <- function (test, yes, no) {
 
   # This is to prepare for calling the base package function
@@ -40,38 +70,138 @@ ifelse <- function (test, yes, no) {
 }
 
 
-# [May 14, 2020 ALR]
-# like pmin to min, pmax to max
+
+
+#' Piecewise mean
+#'
+#' @description
+#' \code{pmean} is to \code{\link[base]{mean}} what
+#' \code{\link[base]{pmax}} is to \code{\link[base]{max}}.
+#'
+#' @param
+#' ...    vectors
+#' na.rm  a logical indicating whether missing values should be removed
+#'
+#' @return
+#' Return the average of the numbers in the same position
+#' across all inputs.
+#'
+#' @examples
+#' pmean(1:10, 5, 11:20)
+#' pmean(1:10, 5, c(11:19, NA))
+#' pmean(1:10, 5, c(11:19, NA), na.rm = FALSE)
+#'
+#' @export
 pmean <- function(..., na.rm = TRUE) {
   m <- cbind(...)
   apply(m, 1, mean, na.rm = na.rm)
 }
 
 
+
+#' Year of a date vector
+#'
+#' @param
+#' d    a vector of dates
+#'
+#' @return
+#' The year part of each value in \code{d}
+#' as an integer.
+#'
+#' @examples
+#' year(as.Date('2020-10-14'))
+#' year(ISOdate(1923, 12, 2))
+#'
+#' @export
 year <- function(d){
   as.integer(format(d, '%Y'))
 }
 
 
 
+#' Month of a date vector
+#'
+#' @param
+#' d    a vector of dates
+#'
+#' @return
+#' The month part of each value in \code{d}
+#' as an integer.
+#'
+#' @examples
+#' month(as.Date('2020-10-14'))
+#' month(ISOdate(1923, 12, 2))
+#'
+#' @export
 month <- function(d) {
   as.integer(format(d, '%m'))
 }
 
 
 
+#' Day of a date vector
+#'
+#' @param
+#' d    a vector of dates
+#'
+#' @return
+#' The day part of each value in \code{d}
+#' as an integer.
+#'
+#' @examples
+#' day(as.Date('2020-10-14'))
+#' day(ISOdate(1923, 12, 2))
+#'
+#' @export
 day <- function(d){
   as.integer(format(d, '%d'))
 }
 
 
 
+#' Quarter of a date vector
+#'
+#' @param
+#' d    a vector of dates
+#'
+#' @return
+#' The quarter (1, 2, 3, or 4) each date in \code{d}
+#' falls in.
+#'
+#' @examples
+#' quarter(as.Date('2020-01-14'))
+#' quarter(ISOdate(1923, 12, 2))
+#'
+#' @export
 quarter <- function(d){
   rep(1:4, each = 3)[month(d)]
 }
 
 
 
+
+#' Get a substring from the left
+#'
+#' @description
+#' Inspired by the Excel function with the same name.
+#'
+#' @param
+#' string    a vector of strings
+#' n         a vector of integers (will be recycled, if needed)
+#'
+#' @return
+#' The first \code{n} characters of each value in \code{string}.
+#' If \code{n} has length 1, then that value is applied to all strings
+#' because of recycling.
+#' However, \code{n} can have more than one element!
+#'
+#'
+#' @examples
+#' left('lazy dog', 4)
+#' left(c('lazy dog', 'blue dog'), 4)
+#' left(c('lazy dog', 'red dog'), c(4, 3))
+#'
+#' @export
 left <- function(string, n) {
   substring(
     text = string,
@@ -82,6 +212,28 @@ left <- function(string, n) {
 
 
 
+#' Get a substring from the right
+#'
+#' @description
+#' Inspired by the Excel function with the same name.
+#'
+#' @param
+#' string    a vector of strings
+#' n         a vector of integers (will be recycled, if needed)
+#'
+#' @return
+#' The last \code{n} characters of each value in \code{string}.
+#' If \code{n} has length 1, then that value is applied to all strings
+#' because of recycling.
+#' However, \code{n} can have more than one element!
+#'
+#'
+#' @examples
+#' right('lazy dog', 3)
+#' right(c('lazy dog', 'blue dog'), 3)
+#' right(c('lazy dog', 'red frog'), c(3, 4))
+#'
+#' @export
 right <- function(string, n) {
 
   out.len <- max(length(string), length(n))
@@ -99,15 +251,53 @@ right <- function(string, n) {
 
 
 
-mid <- function(string, start, end) {
-  substring(string, start, end)
+#' Get a substring from the middle
+#'
+#' @description
+#' Inspired by the Excel function with the same name.
+#'
+#' @param
+#' string    a vector of strings
+#' start     a vector of starting points (will be recycled, if needed)
+#' length    a vector of lengths (will be recycled, if needed)
+#'
+#' @return
+#' The \code{length} characters of each value in \code{string}
+#' starting with the \code{start} character.
+#'
+#' @examples
+#' mid('lazy dog', 3, 2)
+#' mid('lazy dog', 6, 3)
+#' mid(c('lazy dog', 'blue dog'), 2, 2)
+#' mid(c('lazy dog', 'red frog'), 6, c(3, 2))
+#'
+#' @export
+mid <- function(string, start, length) {
+  substring(string, start, start + length - 1)
 }
 
 
 
 
-# [May 14, 2020 ALR]
-# Be sensitive to all trailing and leading whitespace
+#' Remove leading and trailing whitespace from characters
+#'
+#' @description
+#' Inspired by the Excel function with the same name.
+#'
+#' @param
+#' x    a vector of strings
+#'
+#' @return
+#' \code{x} without any leading or trailing whitespace.
+#'
+#' @examples
+#' trim('  leading spaces')
+#' trim('trailing spaces   ')
+#' trim('  leading and trailing spaces   ')
+#' trim('\n\r\t Other kinds of whitespace \t\n\r')
+#' trim("\n Doesn't affect internal whitespace  ")
+#'
+#' @export
 trim <- function(x) {
   gsub("^(\\s+)|(\\s+)$", "", x);
 }
@@ -115,6 +305,21 @@ trim <- function(x) {
 
 
 
+#' Package dev: open a test file
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
 
   test <- as.character(match.call(expand.dots = FALSE)$test)
@@ -139,6 +344,21 @@ open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
 
 
 
+#' Load Rdata to an environment
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 load_env <- function(RData, env = new.env()){
   # con <- gzfile(RData)
   # on.exit(close(con))
@@ -148,24 +368,22 @@ load_env <- function(RData, env = new.env()){
 
 
 
-# env_name <- function(env) {
-#   n <- base::environmentName(env)
-#   if (n == '') {
-#     return(capture.output(env))
-#   } else {
-#     return(n)
-#   }
-# }
-
-
-
-# clear_env <- function(pos = .GlobalEnv){
-#   rm(list = ls(pos), pos = pos)
-# }
-
-
-
-source_env <-function(RScript, env = new.env()){
+#' Source R code to an environment
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
+source_env <- function(RScript, env = new.env()){
   with(env, {
     base::source(RScript, local = TRUE)
     env
@@ -174,8 +392,21 @@ source_env <-function(RScript, env = new.env()){
 
 
 
-# [May 14, 2020 ALR]
-# Name changed to execute_in from ExecuteIn
+#' Execute a function in an environment
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 execute_in <- function(f, env, ...) {
   if (!'environment' %in% class(env))
     env <- as.environment(env)
@@ -190,7 +421,21 @@ execute_in <- function(f, env, ...) {
 
 
 
-
+#' Write the code of a function to a file
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 write.function <- function(f, file, name = NULL) {
   if (is.null(name)) {
     name <- as.character(match.call(expand.dots = FALSE)$f)
@@ -203,6 +448,22 @@ write.function <- function(f, file, name = NULL) {
 
 
 
+
+#' Write the code of a package to a file
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 write.package <- function(pkg, folder) {
   dir.create(folder, showWarnings = FALSE)
   fs <- ls(getNamespace(pkg), all = TRUE)
@@ -216,6 +477,21 @@ write.package <- function(pkg, folder) {
 
 
 
+#' Pre-evaluate arguments of a function
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 curry <- function(FUN, ...) {
 
   # curry
@@ -244,6 +520,22 @@ curry <- function(FUN, ...) {
 
 
 
+
+#' Header search function factory
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 HFactory  <- function(name, ignore.case = TRUE){
   is.function <- base::is.function(name)
 
@@ -268,13 +560,60 @@ HFactory  <- function(name, ignore.case = TRUE){
 
 
 
-# [May 14, 2020 ALR]
-# CNumeric changed to cnumeric
-# CNumeric is a VBA function, hence the name
+
+#' Convert text to numbers
+#'
+#' @description
+#' This function takes characters that look like numbers
+#' and converts them to numbers.
+#' Its name is based on the VBA function \code{CNumeric}.
+#' It does some pre-processing before calling
+#' \code{\link[base]{as.numeric}}.
+#' \enumerate{
+#'   \item converts factors
+#'   \item removes all whitespace
+#'   \item converts wrapping "()" to negatives
+#'   \item removes commas
+#'   \item converts percentages to decimals
+#'   \item calls \code{\link[base]{as.numeric}}
+#' }
+#'
+#' @param v           a vector
+#'
+#' @return A vector of numerics. Returns \code{NA}
+#' when conversion is not possible after application
+#' of the rules above.
+#'
+#' @examples
+#' # Commas are removed
+#' cnumeric(c('1,000,000', '2,000.03'))
+#'
+#' # But, we don't check to make sure that
+#' # commas are in the right place first
+#' cnumeric(c('1,0,0', '2,0000.03'))
+#'
+#' # Accounting-style negatives
+#' cnumeric(c('(1,000.92)', '(4)'))
+#'
+#' # Percents are converted
+#' cnumeric(c('28.3%', '-1.3%', '(15%)'))
+#'
+#' # If scientific notation is present, R knows what to do
+#' cnumeric(c('3e7', '5e-1'))
+#'
+#' # TODO it doesn't deal with currencies yet
+#' cnumeric(c('USD 0.10', '$14.34'))
+#'
+#' @export
 cnumeric <- function(v) {
 
+  # If this has levels, unlevel it
+  if (!is.null(levels(v)) & is.integer(unclass(v))) {
+    v <- levels(v)[unclass(v)]
+  }
+
   # Trim first
-  v <- trim(v)
+  v <- gsub(pattern = '\\s*', replacement = '', v)
 
   # Check to see if negatives are wrapped in ()
   l <- grepl('^\\(.*\\)$', v)
@@ -296,8 +635,22 @@ cnumeric <- function(v) {
 
 
 
-# [May 14, 2020 ALR]
-# add namespace to utils::read.csv
+
+#' Read CSVs without factors
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 read.csv0 <- curry(utils::read.csv, stringsAsFactors = FALSE)
 
 
@@ -305,187 +658,70 @@ read.csv0 <- curry(utils::read.csv, stringsAsFactors = FALSE)
 
 
 
-# # [May 14, 2020 ALR]
-# # While this function was useful for the CT SERS project
-# # it is finicky
-# # Replacing with vlookup from another project
-# lookup <- function(data, ltable, by, drop = TRUE) {
-#
-#   if (nrow(data) > 0)
-#     data$ID_ <- 1:nrow(data)
-#   else
-#     data$ID_ <- integer(0)
-#
-#
-#   ln <- names(ltable)
-#   dn <- names(data)
-#
-#   if (!missing(by)) {
-#     by_start <- paste0(by, '_start')
-#     ln <- ln[ln %in% c(by, by_start)]
-#     dn <- dn[dn %in% by]
-#   }
-#
-#   lranges <- ln[grepl(pattern = '_start$', x = ln)]
-#
-#
-#   if (length(lranges) > 0) {
-#     dranges <- strtrim(lranges, nchar(lranges) - 6)
-#
-#     for(i in 1:length(lranges)) {
-#
-#       l <- lranges[i]
-#       d <- dranges[i]
-#
-#       lv <- ltable[, l]
-#       dv <- data[, d]
-#
-#       if (is.factor(lv)) lv <- as.character(lv)
-#       if (is.factor(dv)) dv <- as.character(dv)
-#
-#       if (is.character(lv)) lv <- as.Date(lv) %>% as.numeric
-#       if (is.character(dv)) dv <- as.Date(dv) %>% as.numeric
-#
-#       breaks <- c(Inf, lv) %>% unique %>% sort
-#       indexes <- cut(dv, breaks, right = FALSE) %>% as.integer
-#       data[, l] <- breaks[indexes]
-#       ltable[, l] <- lv
-#     }
-#   }
-#
-#   ret <- ln[!ln %in% c(dn, lranges)]
-#   m <- merge(data, ltable, all.x = TRUE, sort = FALSE)[, c('ID_', ret)]
-#   o <- order(m$ID_)
-#   m[o, ret, drop = drop]
-#
-# }
-
-
-
-
-# # [May 14, 2020 ALR]
-# # This used to use data.table
-# # Needs to be re-written to use something else,
-# # maybe C!
-# # Also needs some rationality checking
-# cartesian_join <- function(
-#   data, V, data_key = names(data), V_name = 'X', as.data.frame = TRUE) {
-#
-#   a = data.table(V)
-#   names(a) <- V_name
-#   setkeyv(a, V_name)
-#   b = as.data.table(x = data)
-#   setkeyv(b, data_key)
-#   out <- a[, as.list(b), by = key(a)]
-#
-#   if (as.data.frame) {
-#     return(as.data.frame(out))
-#   } else {
-#     return(out)
-#   }
-#
-# }
-
-
-
-
-
-
-
-# [May 14, 2020 ALR]
-# TODO replace with tidyverse or C-native variant
-#
-# safe_merge <- function(
-#   x, y, by = intersect(names(x), names(y)), by.x = by, by.y = by,
-#   all = FALSE, all.x = all, all.y = all,
-#   sort = TRUE, suffixes = c(".x",".y"),
-#   incomparables = NULL, ...){
-#
-#   # Checks to see if by.x and by.y are unique keys
-#
-#   l.x <- nrow(x)
-#   l.y <- nrow(y)
-#
-#   k.x <- nrow(as.data.frame(unique(x[,by.x])))
-#   k.y <- nrow(as.data.frame(unique(y[,by.y])))
-#
-#   u.x <- (k.x == l.x)
-#   u.y <- (k.y == l.y)
-#
-#   # Warn if both are not unique
-#   if(!u.x & !u.y){
-#     warning('Merge is not safe: by is not a unique key')
-#   }
-#
-#   base::merge(x, y, by, by.x, by.y, all, all.x, all.y, sort, suffixes, incomparables, ...)
-#
-# }
-
-
-# [May 14, 2020 ALR]
-# I never even use switch!
-#
-# pswitch <- function(EXPR, ...) {
-#   m <- cbind(...)
-#   n <- nrow(m)
-#   m[n * (EXPR - 1) + 1:n]
-# }
-
-
-
-
-# [May 14, 2020 ALR]
-# Use clipr instead
-#
-# copy.table <- function(obj, size = 4096) {
-#   clip <- paste('clipboard-', size, sep = '')
-#   f <- file(description = clip, open = 'w')
-#   write.table(obj, f, row.names = FALSE, sep = '\t')
-#   close(f)
-# }
-
-
-
-# [May 14, 2020 ALR]
-# Use clipr instead
-#
-# paste.table <- function() {
-#   f <- file(description = 'clipboard', open = 'r')
-#   df <- read.table(f, sep = '\t', header = TRUE)
-#   close(f)
-#   return(df)
-# }
-
-
-# quarter_name <- function(d){
-#   m <- rep(1:4, each = 3)[as.integer(format(d, '%m'))]
-#   paste(format(d, '%Y'), 'q', m, sep = '')
-# }
-
-
-# normalize_path <- function(p){
-#   p <- base::normalizePath(p, winslash = '/', mustWork = TRUE)
-#   if(grepl('(/|\\\\)$', p)) {
-#     p <- paste(p, '.', sep = '')
-#   }
-#   p
-# }
-
-
-
-
+#' Excel-like \code{VLOOKUP} function
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 vlookup <- function(lookup_value, table_array, col_index_number, type = 0, lookup_index = 1) {
   lookup_index <- lookup_index[1]
   lookup_value <- tolower(lookup_value)
   levels <- tolower(table_array[, lookup_index])
   table_array[factor(lookup_value, levels = levels), col_index_number]
 }
+
+
+
+
+
+
+#' Excel-like \code{VLOOKUP} function
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 VLOOKUP <- function(...) {vlookup(...)}
 
 
 
 
 
+
+#' Doc writing: get LaTeX of a matrix
+#'
+#' @description
+#' TODO
+#'
+#' @param
+#' TODO      Note
+#'
+#' @return
+#' TODO
+#'
+#' @examples
+#' TODO
+#'
+#' @export
 matrix2latex <- function(
   M, one_line = TRUE, print = TRUE, ret = !print) {
   M <- as.matrix(M)
@@ -506,12 +742,42 @@ matrix2latex <- function(
 
 
 
+
+
+#' Intersection of sets
+#'
+#' @description
+#' Give me a bunch of vectors.
+#' I'll give you a unique list of all the values
+#' that appear in all of them.
+#'
+#'
+#' @param
+#' ...   as many vectors as you want
+#'
+#'
+#' @return
+#' A vector of values with no duplicates.
+#' Each value in the return vector appeared in all input vectors.
+#'
+#' @examples
+#' v1 <- 1:5
+#' v2 <- 2:10
+#' v3 <- c("1", "2", "3")
+#' intersection(v1, v2)
+#' intersection(v2, v3)
+#' intersection(v1, v2, v3)
+#'
+#' @export
 intersection <- function(...) {
   V <- list(...)
   if (length(V) == 0) return(logical())
-  out <- V[[1]]
+  out <- unique(V[[1]])
   for (i in 2:length(V)) {
     out <- out[out %in% V[[i]]]
   }
   return(out)
 }
+
+
+
