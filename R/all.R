@@ -504,3 +504,14 @@ matrix2latex <- function(
   invisible()
 }
 
+
+
+intersection <- function(...) {
+  V <- list(...)
+  if (length(V) == 0) return(logical())
+  out <- V[[1]]
+  for (i in 2:length(V)) {
+    out <- out[out %in% V[[i]]]
+  }
+  return(out)
+}
