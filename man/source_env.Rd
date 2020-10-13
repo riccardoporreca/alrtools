@@ -7,15 +7,21 @@
 source_env(RScript, env = new.env())
 }
 \arguments{
-\item{TODO}{Note}
+\item{RScript}{path to the R file you want to run}
+
+\item{env}{the environment you want to run in.  Defaults to a new environment.}
 }
 \value{
-TODO
+Returns the environment where the processing occurred.
 }
 \description{
-TODO
+Instead of sourcing R code in the global environment
+where it might create new objects or overwrite existing ones,
+create a new environment (or use an existing one)
+and source the code there!
 }
 \examples{
-TODO
+# code_env <- source_env('file1.R')
+# source_env('file2.R', code_env)
 
 }

@@ -7,15 +7,31 @@
 write.function(f, file, name = NULL)
 }
 \arguments{
-\item{TODO}{Note}
+\item{f}{the function}
+
+\item{file}{where to save it}
+
+\item{name}{what name to give the object in the file}
 }
 \value{
-TODO
+Invisibly returns the contents of the file that was written.
+The file is a sourceable file.
+You can use \code{name} to give the object a new name
+in the file so if you source it, you will not have
+conflicts.
 }
 \description{
-TODO
+Write the code of a function to a file
 }
 \examples{
-TODO
+my_func <- function(a, b) {a - b * 2 + a^2}
+temp_R <- tempfile(fileext = '.R')
+kode <- write.function(my_func, file = temp_R)
+print(kode)
+
+kode <- write.function(my_func, file = temp_R, name = "diff_name")
+print(kode)
+
+print(readLines(temp_R))
 
 }

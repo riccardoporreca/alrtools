@@ -7,15 +7,27 @@
 curry(FUN, ...)
 }
 \arguments{
-\item{TODO}{Note}
+\item{FUN}{the function we are currying}
+
+\item{...}{the arguments you want to pre-evaluate}
 }
 \value{
-TODO
+the new curried function
 }
 \description{
-TODO
+To curry a function means to pre-evaluate some of the arguments
+So, if you have a function
+  \code{sum <- function(a, b) {a + b}}
+
+And you always want \code{b} to be 1, you could define
+  \code{add.one <- curry(sum, b = 1)}
+
+Which is the same as
+  \code{function(a) {a + 1}}
 }
 \examples{
-TODO
+sum <- function(a, b) {a + b}
+add.one <- curry(sum, b = 1)
+function(a) {a + 1}
 
 }

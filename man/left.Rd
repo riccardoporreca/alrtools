@@ -7,8 +7,9 @@
 left(string, n)
 }
 \arguments{
-\item{string}{a vector of strings
-n         a vector of integers (will be recycled, if needed)}
+\item{string}{a vector of strings}
+
+\item{n}{a vector of integers (will be recycled, if needed)}
 }
 \value{
 The first \code{n} characters of each value in \code{string}.

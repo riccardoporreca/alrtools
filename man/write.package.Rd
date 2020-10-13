@@ -7,15 +7,18 @@
 write.package(pkg, folder)
 }
 \arguments{
-\item{TODO}{Note}
+\item{pkg}{the package of interest}
+
+\item{folder}{the folder where to save the R files}
 }
 \value{
-TODO
+Nothing
 }
 \description{
-TODO
+Uses \code{\link{write.package}} to write
+every function in a package to a specified directory.
 }
 \examples{
-TODO
+# write.package('alrtools', 'some/folder/')
 
 }

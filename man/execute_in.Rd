@@ -7,15 +7,39 @@
 execute_in(f, env, ...)
 }
 \arguments{
-\item{TODO}{Note}
+\item{f}{the function}
+
+\item{env}{the environment you want to run in}
+
+\item{...}{parameters to the function}
 }
 \value{
-TODO
+Returns whatever \code{f} is supposed to return.
 }
 \description{
-TODO
+Run a function in an environment other than Global.
+One way to use this is to take other people's code
+that uses global objects and create wrapper functions
+where those objects can be passed in.
 }
 \examples{
-TODO
+# A function I get from a colleagues code
+# Imagine it is something you cannot re-write easily
+bad_func <- function(n) {
+  set.seed(0)
+  return(rnorm(n, mean = mu, sd = mu / 2))
+}
+
+mu <- 5
+bad_func(3)
+
+good_func <- function(n, mu) {
+  temp_env <- new.env()
+  temp_env$mu <- mu
+  execute_in(bad_func, temp_env, n = n)
+}
+
+good_func(3, 5)
+good_func(3, 10)
 
 }

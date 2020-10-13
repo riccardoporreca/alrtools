@@ -1,20 +1,11 @@
 # Author: Adam L. Rich
-# Date:   November 4, 2017
-#         May 14, 2020
-# Description
+# Date:   October 12, 2020
+# Description:
 #
 #   A bunch of convenience functions
 #
 #   [May 14, 2020 ALR]
-#   read.csv0 is back!
-#   lookup removed
-#   commented out any functions I don't use
 #   copy.table and paste.table removed, use clipr instead
-#
-#   TODO
-#     * Find other functions to add, like `vlookup`
-#     * Finish writing tests
-#     * Add R help inline to this file
 #
 
 
@@ -22,21 +13,21 @@
 #' Euler's number
 #' @description 2.718282
 "e"
+# Defined in data-raw/build-templates.R
 
 
 
 
-#' A factor-safe version of \code{\link[base]{ifelse}}
+#' A factor-safe version of \code{base::ifelse}
 #'
 #' @description
 #' The \code{\link[base]{ifelse}} function does weird
 #' things when you pass it factors.
 #' This version doesn't.
 #'
-#' @param
-#' test   a vector of logicals
-#' yes    values to return if test is TRUE
-#' no     values to return if test if FALSE
+#' @param	test   a vector of logicals
+#' @param	yes    values to return if test is TRUE
+#' @param	no     values to return if test if FALSE
 #'
 #' @return
 #' For each position, \code{ifelse} returns
@@ -52,8 +43,8 @@
 #' # base ifelse does weird stuff with factors
 #' yesf <- factor(c('Yes', 'Yeah!'))
 #' nof <- factor(c('No', 'Nope'))
-#' base::ifelse(c(T, F), yesf, nof)
-#' ifelse(c(T, F), yesf, nof)
+#' base::ifelse(c(TRUE, FALSE), yesf, nof)
+#' alrtools::ifelse(c(TRUE, FALSE), yesf, nof)
 #'
 #' @export
 ifelse <- function (test, yes, no) {
@@ -78,9 +69,8 @@ ifelse <- function (test, yes, no) {
 #' \code{pmean} is to \code{\link[base]{mean}} what
 #' \code{\link[base]{pmax}} is to \code{\link[base]{max}}.
 #'
-#' @param
-#' ...    vectors
-#' na.rm  a logical indicating whether missing values should be removed
+#' @param	...    vectors
+#' @param	na.rm  a logical indicating whether missing values should be removed
 #'
 #' @return
 #' Return the average of the numbers in the same position
@@ -101,8 +91,7 @@ pmean <- function(..., na.rm = TRUE) {
 
 #' Year of a date vector
 #'
-#' @param
-#' d    a vector of dates
+#' @param	d    a vector of dates
 #'
 #' @return
 #' The year part of each value in \code{d}
@@ -121,8 +110,7 @@ year <- function(d){
 
 #' Month of a date vector
 #'
-#' @param
-#' d    a vector of dates
+#' @param	d    a vector of dates
 #'
 #' @return
 #' The month part of each value in \code{d}
@@ -141,8 +129,7 @@ month <- function(d) {
 
 #' Day of a date vector
 #'
-#' @param
-#' d    a vector of dates
+#' @param	d    a vector of dates
 #'
 #' @return
 #' The day part of each value in \code{d}
@@ -161,8 +148,7 @@ day <- function(d){
 
 #' Quarter of a date vector
 #'
-#' @param
-#' d    a vector of dates
+#' @param	d    a vector of dates
 #'
 #' @return
 #' The quarter (1, 2, 3, or 4) each date in \code{d}
@@ -185,9 +171,8 @@ quarter <- function(d){
 #' @description
 #' Inspired by the Excel function with the same name.
 #'
-#' @param
-#' string    a vector of strings
-#' n         a vector of integers (will be recycled, if needed)
+#' @param	string    a vector of strings
+#' @param	n         a vector of integers (will be recycled, if needed)
 #'
 #' @return
 #' The first \code{n} characters of each value in \code{string}.
@@ -217,9 +202,8 @@ left <- function(string, n) {
 #' @description
 #' Inspired by the Excel function with the same name.
 #'
-#' @param
-#' string    a vector of strings
-#' n         a vector of integers (will be recycled, if needed)
+#' @param	string    a vector of strings
+#' @param	n         a vector of integers (will be recycled, if needed)
 #'
 #' @return
 #' The last \code{n} characters of each value in \code{string}.
@@ -256,10 +240,9 @@ right <- function(string, n) {
 #' @description
 #' Inspired by the Excel function with the same name.
 #'
-#' @param
-#' string    a vector of strings
-#' start     a vector of starting points (will be recycled, if needed)
-#' length    a vector of lengths (will be recycled, if needed)
+#' @param	string    a vector of strings
+#' @param	start     a vector of starting points (will be recycled, if needed)
+#' @param	length    a vector of lengths (will be recycled, if needed)
 #'
 #' @return
 #' The \code{length} characters of each value in \code{string}
@@ -284,8 +267,7 @@ mid <- function(string, start, length) {
 #' @description
 #' Inspired by the Excel function with the same name.
 #'
-#' @param
-#' x    a vector of strings
+#' @param	x    a vector of strings
 #'
 #' @return
 #' \code{x} without any leading or trailing whitespace.
@@ -308,16 +290,22 @@ trim <- function(x) {
 #' Package dev: open a test file
 #'
 #' @description
-#' TODO
+#' For use in package development.
+#' Open a file in tests/testthat/ for the object called "test"
+#' If the file doesn't already exist, create it.
+#' If it already exists, open it for editing.
 #'
-#' @param
-#' TODO      Note
+#' @param	test     the object you want to write a test for
+#' @param	pkg      to pass for the knitr environment.  Defaults to current working directory
+#' @param	engine   if you are using something other than testthat,
+#'                   you can save this test to "tests/ENGINE/"
 #'
 #' @return
-#' TODO
+#' Returns NULL invisibly.
+#' Side-effect: opens the test file in the editor.
 #'
 #' @examples
-#' TODO
+#' # open_test(lm)
 #'
 #' @export
 open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
@@ -327,7 +315,7 @@ open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
   test_dir <- dirname(test_file)
 
   if (file.exists(test_file)) {
-    file.edit(test_file)
+    utils::file.edit(test_file)
     return(invisible(NULL))
   }
 
@@ -335,10 +323,10 @@ open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
     dir.create(test_dir, recursive = TRUE)
 
   knit_env <- list(f = test, pkg = pkg)
-  RCode <- knit(text = test_template, envir = knit_env)
+  RCode <- knitr::knit(text = test_template, envir = knit_env)
   writeChar(RCode, test_file)
 
-  file.edit(test_file)
+  utils::file.edit(test_file)
   return(invisible(NULL))
 }
 
@@ -347,16 +335,21 @@ open_test <- function(test, pkg = basename(getwd()), engine = 'testthat') {
 #' Load Rdata to an environment
 #'
 #' @description
-#' TODO
+#' Instead of loading RData files to the global environment
+#' load them to a new env.
+#' \code{base::load} already has a way to do this,
+#' but this is a convenience function that creates
+#' a new environment by default.
 #'
-#' @param
-#' TODO      Note
+#' @param	RData    path to the RData file you want to load
+#' @param	env      the environment you want to load to.  Defaults to a new environment.
 #'
 #' @return
-#' TODO
+#' Returns the environment you are loading to.
 #'
 #' @examples
-#' TODO
+#' # data_env <- load_env('file1.RData')
+#' # load_env('file2.RData', data_env)
 #'
 #' @export
 load_env <- function(RData, env = new.env()){
@@ -371,16 +364,20 @@ load_env <- function(RData, env = new.env()){
 #' Source R code to an environment
 #'
 #' @description
-#' TODO
+#' Instead of sourcing R code in the global environment
+#' where it might create new objects or overwrite existing ones,
+#' create a new environment (or use an existing one)
+#' and source the code there!
 #'
-#' @param
-#' TODO      Note
+#' @param	RScript  path to the R file you want to run
+#' @param	env      the environment you want to run in.  Defaults to a new environment.
 #'
 #' @return
-#' TODO
+#' Returns the environment where the processing occurred.
 #'
 #' @examples
-#' TODO
+#' # code_env <- source_env('file1.R')
+#' # source_env('file2.R', code_env)
 #'
 #' @export
 source_env <- function(RScript, env = new.env()){
@@ -395,16 +392,37 @@ source_env <- function(RScript, env = new.env()){
 #' Execute a function in an environment
 #'
 #' @description
-#' TODO
+#' Run a function in an environment other than Global.
+#' One way to use this is to take other people's code
+#' that uses global objects and create wrapper functions
+#' where those objects can be passed in.
 #'
-#' @param
-#' TODO      Note
+#' @param	f       the function
+#' @param	env     the environment you want to run in
+#' @param	...     parameters to the function
 #'
 #' @return
-#' TODO
+#' Returns whatever \code{f} is supposed to return.
 #'
 #' @examples
-#' TODO
+#' # A function I get from a colleagues code
+#' # Imagine it is something you cannot re-write easily
+#' bad_func <- function(n) {
+#'   set.seed(0)
+#'   return(rnorm(n, mean = mu, sd = mu / 2))
+#' }
+#'
+#' mu <- 5
+#' bad_func(3)
+#'
+#' good_func <- function(n, mu) {
+#'   temp_env <- new.env()
+#'   temp_env$mu <- mu
+#'   execute_in(bad_func, temp_env, n = n)
+#' }
+#'
+#' good_func(3, 5)
+#' good_func(3, 10)
 #'
 #' @export
 execute_in <- function(f, env, ...) {
@@ -423,17 +441,27 @@ execute_in <- function(f, env, ...) {
 
 #' Write the code of a function to a file
 #'
-#' @description
-#' TODO
-#'
-#' @param
-#' TODO      Note
+#' @param	f       the function
+#' @param	file    where to save it
+#' @param	name    what name to give the object in the file
 #'
 #' @return
-#' TODO
+#' Invisibly returns the contents of the file that was written.
+#' The file is a sourceable file.
+#' You can use \code{name} to give the object a new name
+#' in the file so if you source it, you will not have
+#' conflicts.
 #'
 #' @examples
-#' TODO
+#' my_func <- function(a, b) {a - b * 2 + a^2}
+#' temp_R <- tempfile(fileext = '.R')
+#' kode <- write.function(my_func, file = temp_R)
+#' print(kode)
+#'
+#' kode <- write.function(my_func, file = temp_R, name = "diff_name")
+#' print(kode)
+#'
+#' print(readLines(temp_R))
 #'
 #' @export
 write.function <- function(f, file, name = NULL) {
@@ -452,21 +480,22 @@ write.function <- function(f, file, name = NULL) {
 #' Write the code of a package to a file
 #'
 #' @description
-#' TODO
+#' Uses \code{\link{write.package}} to write
+#' every function in a package to a specified directory.
 #'
-#' @param
-#' TODO      Note
+#' @param	pkg       the package of interest
+#' @param	folder    the folder where to save the R files
 #'
 #' @return
-#' TODO
+#' Nothing
 #'
 #' @examples
-#' TODO
+#' # write.package('alrtools', 'some/folder/')
 #'
 #' @export
 write.package <- function(pkg, folder) {
   dir.create(folder, showWarnings = FALSE)
-  fs <- ls(getNamespace(pkg), all = TRUE)
+  fs <- ls(getNamespace(pkg), all.names = TRUE)
   for (f in fs) {
     g <- get(f, envir = getNamespace(pkg))
     p <- paste0(folder, '/', f, '.R')
@@ -480,34 +509,30 @@ write.package <- function(pkg, folder) {
 #' Pre-evaluate arguments of a function
 #'
 #' @description
-#' TODO
+#' To curry a function means to pre-evaluate some of the arguments
+#' So, if you have a function
+#'   \code{sum <- function(a, b) {a + b}}
 #'
-#' @param
-#' TODO      Note
+#' And you always want \code{b} to be 1, you could define
+#'   \code{add.one <- curry(sum, b = 1)}
+#'
+#' Which is the same as
+#'   \code{function(a) {a + 1}}
+#'
+#'
+#' @param	FUN        the function we are currying
+#' @param	...        the arguments you want to pre-evaluate
 #'
 #' @return
-#' TODO
+#' the new curried function
 #'
 #' @examples
-#' TODO
+#' sum <- function(a, b) {a + b}
+#' add.one <- curry(sum, b = 1)
+#' function(a) {a + 1}
 #'
 #' @export
 curry <- function(FUN, ...) {
-
-  # curry
-  #   To curry a function means to pre-evaluate some of the arguments
-  #   So, if you have a function
-  #
-  #     sum <- function(a, b) {a + b}
-  #
-  #   And you always want b to be 1, you could define
-  #
-  #     add.one <- curry(sum, b = 1)
-  #
-  #   Which is the same as
-  #
-  #     function(a) {a + 1}
-  #
 
   # curry works because list evaluates its arguments
   .orig = list(...)
@@ -524,19 +549,34 @@ curry <- function(FUN, ...) {
 #' Header search function factory
 #'
 #' @description
-#' TODO
+#' Give \code{HFactory} an object or a name of an object
+#' that has a \code{names} attribute
+#' (Or a function that *returns* a named object).
+#' \code{HFactory} will build you an easy-to-use function
+#' that encapsulates searching the "header" of
+#' the object.
 #'
-#' @param
-#' TODO      Note
+#' @param	name         the object or name of the object
+#' @param	ignore.case  do you want your header search function to ignore case?
 #'
 #' @return
-#' TODO
+#' a function that takes one argument: \code{pattern}.
+#' Give the return value a name, and you can call it like any other function.
+#' It will use \code{grep} and \code{pattern} to find matching \code{names}.
+#' The header-search function that is returned will catch name changes, too.
 #'
 #' @examples
-#' TODO
+#' my_iris <- datasets::iris
+#' hi <- HFactory(my_iris)
+#' hi('length')
+#' hi('width')
+#' my_iris$SpeciesPredicted <- 'TODO'
+#' hi('species')
 #'
 #' @export
 HFactory  <- function(name, ignore.case = TRUE){
+  # TODO: there is something going on when using H functions
+  # in a non-global environment
   is.function <- base::is.function(name)
 
   # Previously, name had to be a charater string representing the name of an object (how annoying!)
@@ -545,16 +585,11 @@ HFactory  <- function(name, ignore.case = TRUE){
   name <- as.character(match.call(expand.dots = FALSE)$name)
 
   # If name is a function object, trail with "()"
-  if(is.function) name <- paste(name, '()', sep = '')
+  if(is.function) name <- paste0(name, '()')
 
   # Also, now it allows for a case-sensitive function
   if(ignore.case) ic = 'TRUE' else ic = 'FALSE'
-
-  s <- paste('
-             function(pattern = \'\'){
-             names(', name, ')[grep(pattern, names(', name, '), ignore.case = ',ic,')]
-}', sep = '')
-
+  s <- paste0('function(pattern = \'\'){names(', name, ')[grep(pattern, names(', name, '), ignore.case = ',ic,')]}')
   return(eval(parse(text = s)))
 }
 
@@ -578,7 +613,7 @@ HFactory  <- function(name, ignore.case = TRUE){
 #'   \item calls \code{\link[base]{as.numeric}}
 #' }
 #'
-#' @param v           a vector
+#' @param	v           a vector
 #'
 #' @return A vector of numerics. Returns \code{NA}
 #' when conversion is not possible after application
@@ -639,16 +674,21 @@ cnumeric <- function(v) {
 #' Read CSVs without factors
 #'
 #' @description
-#' TODO
+#' \code{read.csv0} is to \code{read.csv} what
+#' \code{paste0} is to \code{paste}.
+#' More often that not, I see people using \code{read.csv}
+#' with \code{stringsAsFactors = FALSE} (like you will
+#' often see people calling \code{paste} with \code{sep = ''}).
+#' This is a variant where \code{stringsAsFactors} is preset.
+#' Relies on the \code{\link{curry}} function.
 #'
-#' @param
-#' TODO      Note
+#' @param	...     See parameters for \code{\link{read.csv}}
 #'
 #' @return
-#' TODO
+#' See help page for \code{\link{read.csv}}
 #'
 #' @examples
-#' TODO
+#' # See help page for \code{\link{read.csv}}
 #'
 #' @export
 read.csv0 <- curry(utils::read.csv, stringsAsFactors = FALSE)
@@ -661,19 +701,39 @@ read.csv0 <- curry(utils::read.csv, stringsAsFactors = FALSE)
 #' Excel-like \code{VLOOKUP} function
 #'
 #' @description
-#' TODO
+#' Works just like Excel's \code{VLOOKUP} function
+#' with a few improvements.
 #'
-#' @param
-#' TODO      Note
+#' @param	lookup_value        a vector of values you want to match in the \code{table_array} column of interest
+#' @param	table_array         the data you are "looking up" in
+#' @param	col_index_number    the index of the column you want to return
+#' @param	type                0 = exact match.  No other method is currently supported
+#' @param	lookup_index        the column index of the column \code{lookup_value} is matched to
+#'                              (In Excel, this is always "1")
 #'
 #' @return
-#' TODO
+#' Returns a vector of values with the same length as \code{lookup_value}.
+#' If a value is not found, then NA is returned.
+#' Unlike Excel, the column we are matching against cannot have duplicates.
 #'
 #' @examples
-#' TODO
+#' ref <- data.frame(
+#'   state = c('UT', 'FL', 'NY', 'CA', 'SD'),
+#'   category = c(1, 2, 3, 3, 1)
+#' )
+#'
+#' vlookup('CA', ref, 1, 0)
+#' vlookup('CA', ref, 2, 0)
+#'
+#' vlookup(c('CA', 'FL', 'KY'), ref, 2, 0)
+#'
+#' ref[2, 2] <- 4
+#' vlookup('FL', ref, 2, 0)
+#'
 #'
 #' @export
-vlookup <- function(lookup_value, table_array, col_index_number, type = 0, lookup_index = 1) {
+vlookup <- function(
+    lookup_value, table_array, col_index_number, type = 0, lookup_index = 1) {
   lookup_index <- lookup_index[1]
   lookup_value <- tolower(lookup_value)
   levels <- tolower(table_array[, lookup_index])
@@ -685,41 +745,26 @@ vlookup <- function(lookup_value, table_array, col_index_number, type = 0, looku
 
 
 
-#' Excel-like \code{VLOOKUP} function
-#'
-#' @description
-#' TODO
-#'
-#' @param
-#' TODO      Note
-#'
-#' @return
-#' TODO
-#'
-#' @examples
-#' TODO
-#'
-#' @export
-VLOOKUP <- function(...) {vlookup(...)}
-
-
-
-
-
-
 #' Doc writing: get LaTeX of a matrix
 #'
 #' @description
-#' TODO
+#' If you are working in RMarkdown and need to write a matrix in LaTeX
+#' it can be a pain.  This function tries to make it easier.
 #'
-#' @param
-#' TODO      Note
+#' @param	M          a matrix-like object
+#' @param	one_line   logical -- whether to return one-line or many
+#' @param	print      logical -- print the LaTeX to the screen
+#' @param	ret        logical -- return the text so it can be stored in a variable
 #'
 #' @return
-#' TODO
+#' If \code{ret = TRUE}, the LaTeX code to represent the matrix.
+#' If \code{print = TRUE}, the code is printed to the screen using \code{message}.
 #'
 #' @examples
-#' TODO
+#' m <- datasets::iris[1:5, 1:4]
+#' matrix2latex(m)
+#' tex <- matrix2latex(m, print = FALSE)
+#' print(tex)
 #'
 #' @export
 matrix2latex <- function(
@@ -752,8 +797,7 @@ matrix2latex <- function(
 #' that appear in all of them.
 #'
 #'
-#' @param
-#' ...   as many vectors as you want
+#' @param	...   as many vectors as you want
 #'
 #'
 #' @return

@@ -7,15 +7,22 @@
 load_env(RData, env = new.env())
 }
 \arguments{
-\item{TODO}{Note}
+\item{RData}{path to the RData file you want to load}
+
+\item{env}{the environment you want to load to.  Defaults to a new environment.}
 }
 \value{
-TODO
+Returns the environment you are loading to.
 }
 \description{
-TODO
+Instead of loading RData files to the global environment
+load them to a new env.
+\code{base::load} already has a way to do this,
+but this is a convenience function that creates
+a new environment by default.
 }
 \examples{
-TODO
+# data_env <- load_env('file1.RData')
+# load_env('file2.RData', data_env)
 
 }

@@ -7,15 +7,26 @@
 matrix2latex(M, one_line = TRUE, print = TRUE, ret = !print)
 }
 \arguments{
-\item{TODO}{Note}
+\item{M}{a matrix-like object}
+
+\item{one_line}{logical -- whether to return one-line or many}
+
+\item{print}{logical -- print the LaTeX to the screen}
+
+\item{ret}{logical -- return the text so it can be stored in a variable}
 }
 \value{
-TODO
+If \code{ret = TRUE}, the LaTeX code to represent the matrix.
+If \code{print = TRUE}, the code is printed to the screen using \code{message}.
 }
 \description{
-TODO
+If you are working in RMarkdown and need to write a matrix in LaTeX
+it can be a pain.  This function tries to make it easier.
 }
 \examples{
-TODO
+m <- datasets::iris[1:5, 1:4]
+matrix2latex(m)
+tex <- matrix2latex(m, print = FALSE)
+print(tex)
 
 }

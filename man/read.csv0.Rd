@@ -7,15 +7,21 @@
 read.csv0(...)
 }
 \arguments{
-\item{TODO}{Note}
+\item{...}{See parameters for \code{\link{read.csv}}}
 }
 \value{
-TODO
+See help page for \code{\link{read.csv}}
 }
 \description{
-TODO
+\code{read.csv0} is to \code{read.csv} what
+\code{paste0} is to \code{paste}.
+More often that not, I see people using \code{read.csv}
+with \code{stringsAsFactors = FALSE} (like you will
+often see people calling \code{paste} with \code{sep = ''}).
+This is a variant where \code{stringsAsFactors} is preset.
+Relies on the \code{\link{curry}} function.
 }
 \examples{
-TODO
+# See help page for \code{\link{read.csv}}
 
 }

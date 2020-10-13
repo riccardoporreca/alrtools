@@ -32,10 +32,6 @@ test_that('base::ifelse has a problem when branches are factors', {
     any(truef == false),
     'Still not the same even though true branch is now a factor')
 
-  all(
-    as.integer(truef) == false,
-    'Convert true branch to factor and now they match!')
-
   expect_is(base::ifelse(test, true, false), 'character')
   expect_is(base::ifelse(test, truef, false), 'integer')
 

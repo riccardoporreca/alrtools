@@ -2,14 +2,16 @@
 % Please edit documentation in R/all.R
 \name{ifelse}
 \alias{ifelse}
-\title{A factor-safe version of \code{\link[base]{ifelse}}}
+\title{A factor-safe version of \code{base::ifelse}}
 \usage{
 ifelse(test, yes, no)
 }
 \arguments{
-\item{test}{a vector of logicals
-yes    values to return if test is TRUE
-no     values to return if test if FALSE}
+\item{test}{a vector of logicals}
+
+\item{yes}{values to return if test is TRUE}
+
+\item{no}{values to return if test if FALSE}
 }
 \value{
 For each position, \code{ifelse} returns
@@ -30,7 +32,7 @@ ifelse(
 # base ifelse does weird stuff with factors
 yesf <- factor(c('Yes', 'Yeah!'))
 nof <- factor(c('No', 'Nope'))
-base::ifelse(c(T, F), yesf, nof)
-ifelse(c(T, F), yesf, nof)
+base::ifelse(c(TRUE, FALSE), yesf, nof)
+alrtools::ifelse(c(TRUE, FALSE), yesf, nof)
 
 }

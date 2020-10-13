@@ -7,9 +7,11 @@
 mid(string, start, length)
 }
 \arguments{
-\item{string}{a vector of strings
-start     a vector of starting points (will be recycled, if needed)
-length    a vector of lengths (will be recycled, if needed)}
+\item{string}{a vector of strings}
+
+\item{start}{a vector of starting points (will be recycled, if needed)}
+
+\item{length}{a vector of lengths (will be recycled, if needed)}
 }
 \value{
 The \code{length} characters of each value in \code{string}

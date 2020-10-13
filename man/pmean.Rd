@@ -7,8 +7,9 @@
 pmean(..., na.rm = TRUE)
 }
 \arguments{
-\item{...}{vectors
-na.rm  a logical indicating whether missing values should be removed}
+\item{...}{vectors}
+
+\item{na.rm}{a logical indicating whether missing values should be removed}
 }
 \value{
 Return the average of the numbers in the same position

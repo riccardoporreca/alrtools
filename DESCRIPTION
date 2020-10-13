@@ -1,7 +1,7 @@
 Package: alrtools
 Type: Package
 Title: My R Package
-Version: 2020.10.12
+Version: 2020.10.13
 Authors@R: person("Adam", "Rich", email = "adamleerich@gmail.com", role = c("aut", "cre"))
 Description: Hello, my name is Adam.  I wrote some code in R.  
 License: CC0

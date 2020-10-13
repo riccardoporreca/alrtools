@@ -7,15 +7,24 @@
 open_test(test, pkg = basename(getwd()), engine = "testthat")
 }
 \arguments{
-\item{TODO}{Note}
+\item{test}{the object you want to write a test for}
+
+\item{pkg}{to pass for the knitr environment.  Defaults to current working directory}
+
+\item{engine}{if you are using something other than testthat,
+you can save this test to "tests/ENGINE/"}
 }
 \value{
-TODO
+Returns NULL invisibly.
+Side-effect: opens the test file in the editor.
 }
 \description{
-TODO
+For use in package development.
+Open a file in tests/testthat/ for the object called "test"
+If the file doesn't already exist, create it.
+If it already exists, open it for editing.
 }
 \examples{
-TODO
+# open_test(lm)
 
 }

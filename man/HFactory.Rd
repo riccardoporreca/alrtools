@@ -7,15 +7,30 @@
 HFactory(name, ignore.case = TRUE)
 }
 \arguments{
-\item{TODO}{Note}
+\item{name}{the object or name of the object}
+
+\item{ignore.case}{do you want your header search function to ignore case?}
 }
 \value{
-TODO
+a function that takes one argument: \code{pattern}.
+Give the return value a name, and you can call it like any other function.
+It will use \code{grep} and \code{pattern} to find matching \code{names}.
+The header-search function that is returned will catch name changes, too.
 }
 \description{
-TODO
+Give \code{HFactory} an object or a name of an object
+that has a \code{names} attribute
+(Or a function that *returns* a named object).
+\code{HFactory} will build you an easy-to-use function
+that encapsulates searching the "header" of
+the object.
 }
 \examples{
-TODO
+my_iris <- datasets::iris
+hi <- HFactory(my_iris)
+hi('length')
+hi('width')
+my_iris$SpeciesPredicted <- 'TODO'
+hi('species')
 
 }
