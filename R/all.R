@@ -532,7 +532,54 @@ write.package <- function(pkg, folder) {
 #' function(a) {a + 1}
 #'
 #' @export
-curry <- function(FUN, ...) {
+curry <- function(FUN, ...){
+  orig = as.list(match.call())
+  noms = names(orig)
+  if (length(orig) < 3)
+    return(FUN)
+
+  ff <- formals(FUN)
+  for (i in 3:length(orig)) {
+    # "a value of NULL deletes the corresponding item of the list.
+    # To set entries to NULL, you need x[i] <- list(NULL)."
+    if (is.null(orig[[i]])) {
+      ff[noms[i]] <- list(NULL)
+    } else {
+      ff[[noms[i]]] <- orig[[i]]
+    }
+  }
+  formals(FUN) <- ff
+  return(FUN)
+}
+
+
+
+
+#' RETIRED VERSION Pre-evaluate arguments of a function
+#'
+#' @description
+#' To curry a function means to pre-evaluate some of the arguments
+#' So, if you have a function
+#'   \code{sum <- function(a, b) {a + b}}
+#'
+#' And you always want \code{b} to be 1, you could define
+#'   \code{add.one <- curry(sum, b = 1)}
+#'
+#' Which is the same as
+#'   \code{function(a) {a + 1}}
+#'
+#'
+#' @param	FUN        the function we are currying
+#' @param	...        the arguments you want to pre-evaluate
+#'
+#' @return
+#' the new curried function
+#'
+#' @examples
+#' sum <- function(a, b) {a + b}
+#' add.one <- curry(sum, b = 1)
+#' function(a) {a + 1}
+curry_v1 <- function(FUN, ...) {
 
   # curry works because list evaluates its arguments
   .orig = list(...)

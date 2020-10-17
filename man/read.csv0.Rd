@@ -4,7 +4,17 @@
 \alias{read.csv0}
 \title{Read CSVs without factors}
 \usage{
-read.csv0(...)
+read.csv0(
+  file,
+  header = TRUE,
+  sep = ",",
+  quote = "\\"",
+  dec = ".",
+  fill = TRUE,
+  comment.char = "",
+  ...,
+  stringsAsFactors = FALSE
+)
 }
 \arguments{
 \item{...}{See parameters for \code{\link{read.csv}}}
