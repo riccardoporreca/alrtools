@@ -533,6 +533,9 @@ write.package <- function(pkg, folder) {
 #'
 #' @export
 curry <- function(FUN, ...) {
+  if (is.primitive(FUN)) {
+    stop("`curry()` does not support primitive functions.")
+  }
   orig <- utils::tail(as.list(match.call()), -2)
   noms <- names(orig)
   ff <- formals(FUN)
